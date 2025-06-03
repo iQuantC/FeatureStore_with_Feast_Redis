@@ -15,9 +15,6 @@ In this project, we will build a simple yet practical MLOps project that demonst
 8. Plotly:          Generating a Gauge chart to display probability
 
 ### Set up Project Environment
-```sh
-mkdir feast-featurestore-demo && cd feast-featurestore-demo
-```
 
 ```sh
 python3 -m venv venv
