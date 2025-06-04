@@ -48,6 +48,7 @@ To get the IP address of Redis Docker Container:
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis
 ```
 Copy IP Address and Save it somewhere safe.
+Redis IP: 172.20.0.2
 
 
 ### Initialize Feast Repository
@@ -66,7 +67,7 @@ registry: data/registry.db
 provider: local
 online_store:
   type: redis
-  connection_string: "localhost:6379"
+  connection_string: "redisIP:6379"
 offline_store:
   type: file
 ```
@@ -96,7 +97,7 @@ def generate_customer_data():
 
     df = pd.DataFrame(customers)
     df.to_csv("data/customer_transactions.csv", index=False)
-    df.to_parquet("data/customer_transactions.parquet")docker build -t feast-streamlit-app .
+    df.to_parquet("data/customer_transactions.parquet")
 
 if __name__ == "__main__":
     generate_customer_data()
@@ -107,7 +108,7 @@ if __name__ == "__main__":
 ```sh
 python generate_data.py
 ```
-
+ 
 
 ### Define Features with Feast
 Create the file feature_repo/example_feature_repo.py and add the ff contents: 
@@ -188,13 +189,13 @@ docker run -d --name redisinsight --network redis-network -p 5540:5540 redis/red
 Add Redis DB in the Redis Insight GUI > Connection Settings:
 ```sh
     Alias: redis-insight
-    Host: redis
+    Host: redisIP
     Port: 6379
 ```
 Test Connection > Connection should be successful!
 
 
-### Retrieve Features for Inference
+### Retrieve Features from Redis Online Feature Store for Inference
 Create and use the file get_online_features.py to get features stored in the online DB (a.k.a Redis) with the ff content:
 
 ```sh
@@ -219,7 +220,7 @@ feature_vector = store.get_online_features(
 df = pd.DataFrame.from_dict(feature_vector.to_dict())
 df = df[["customer_id", "transaction_count", "total_spent"]]
 print(df)
-```
+``` 
 
 Run the python script:
 ```sh
@@ -344,8 +345,38 @@ localhost:8501
 ```
 
 ### Package Trained ML Model with Docker
-Make sure Docker is installed on your system & requirements.txt should be in the same directory as the Dockerfile
+Make sure Docker is installed on your system & requirements.txt should be in the same directory as the Dockerfile (my_feature_repo):
 
+```sh
+cd my_feature_repo
+touch Dockerfile
+```
+
+Add the following contents: 
+```sh
+# Use an official Python image
+FROM python:3.9-slim
+
+# Set working directory
+WORKDIR /app
+
+# Install system dependencies
+RUN apt-get update && apt-get install -y build-essential
+
+# Copy app and model
+COPY . /app
+
+# Install Python dependencies
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Expose Streamlit port
+EXPOSE 8501
+
+# Command to run Streamlit
+CMD ["streamlit", "run", "streamlit-app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+```
+
+cd to the Directory with requirement.txt and Dockerfile
 Build the image:
 ```sh
 docker build -t feast-streamlit-app .

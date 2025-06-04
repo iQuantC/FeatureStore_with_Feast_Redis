@@ -1,0 +1,9 @@
+project: my_feature_repo
+registry: data/registry.db
+provider: local
+online_store:
+  type: redis
+  connection_string: "172.20.0.2:6379"
+offline_store:
+  type: file
+entity_key_serialization_version: 3
