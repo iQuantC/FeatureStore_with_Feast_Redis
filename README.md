@@ -48,7 +48,6 @@ To get the IP address of Redis Docker Container:
 docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' redis
 ```
 Copy IP Address and Save it somewhere safe.
-Redis IP: 172.20.0.2
 
 
 ### Initialize Feast Repository
@@ -188,7 +187,7 @@ docker run -d --name redisinsight --network redis-network -p 5540:5540 redis/red
 
 Add Redis DB in the Redis Insight GUI > Connection Settings:
 ```sh
-    Alias: redis-insight
+    Alias: some_alias
     Host: redisIP
     Port: 6379
 ```
@@ -376,7 +375,7 @@ EXPOSE 8501
 CMD ["streamlit", "run", "streamlit-app.py", "--server.port=8501", "--server.address=0.0.0.0"]
 ```
 
-cd to the Directory with requirement.txt and Dockerfile
+
 Build the image:
 ```sh
 docker build -t feast-streamlit-app .
@@ -392,6 +391,28 @@ docker run -d -p 8501:8501 --network redis-network --name streamlit-app feast-st
 On your browser, open:
 ```sh
 localhost:8501
+```
+## Clean up
+Stop all the running Docker Containers
+```sh
+docker stop <containerID>
+```
+
+Remove the stopped Docker Containers
+```sh
+docker remove <containerID>
+```
+
+Remove the docker image (if you don't need it anymore)
+```sh
+docker rmi <imageID>
+```
+
+Deactivate and Remove the Virtual Environment
+```sh
+cd FeatureStore_with_Feast_Redis
+deactivate
+rm -rf venv
 ```
 
 **Please Like, Comment, and Subscribe to iQuant on YouTube**
