@@ -7,12 +7,13 @@ In this project, we will build a simple yet practical MLOps project that demonst
 ### Tech Stack
 1. Python:          Programming Language
 2. Feast:           Feature Store Framework
-3. Redis:           Online Feature Store and local file (parquet) for Offline Storage
-4. Pandas:          Numerical Computations
-5. Scikit-learn:    Machine Learning Python Package
-6. Streamlit:       Package ML model with Interactive web GUI
-7. Docker:          Package ML model & all dependencies in a single image file or container.
-8. Plotly:          Generating a Gauge chart to display probability
+3. Parquet:         Offline Feature Store
+4. Redis:           Online Feature Store
+5. Pandas:          Numerical Computations
+6. Scikit-learn:    Machine Learning Python Package
+7. Streamlit:       Package ML model with Interactive web GUI
+8. Docker:          Package ML model & all dependencies in a single image file or container.
+9. Plotly:          Generating a Gauge chart to display probability
 
 ### Set up Project Environment
 
