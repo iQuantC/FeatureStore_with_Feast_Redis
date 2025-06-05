@@ -1,5 +1,5 @@
 # MLOps Feature Store w/ Feast & Redis
-In this project, we will build a simple yet practical MLOps project that demonstrates how to use Feast as a feature store and Redis as Online feature store to serve features to a ML model pipeline. 
+In this project, we will build a simple yet practical MLOps project that demonstrates a local feature store with Parquet file offline feature store and Redis online feature store. We will also "materialize or load" feature values from the offline store into the Redis online store. Then, we will read the latest features from the Redis online store to serve features for the training of a Machine Learning model and inferencing.
 
 
 ## Set Up Environment 
